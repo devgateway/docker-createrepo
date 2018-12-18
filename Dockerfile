@@ -33,7 +33,7 @@ RUN ln -sf /usr/local/bin/python /usr/bin/python
 
 RUN set -o pipefail; \
   wget -O - http://ftp.rpm.org/releases/rpm-4.14.x/rpm-${RPM_VERSION}.tar.bz2 \
-  | tar -xf - -C /tmp \
+  | tar -xjf - -C /tmp \
   && cd /tmp/rpm-${RPM_VERSION} \
   && sed -i '800 s/-${PYTHON_VERSION}/2/' configure.ac \
   && ./autogen.sh --prefix=/usr --enable-python --without-lua \
@@ -43,7 +43,7 @@ RUN set -o pipefail; \
 
 RUN set -o pipefail; \
   wget -O - ${CR_MIRROR}/createrepo-${CR_VERSION}.tar.gz \
-  | tar -xf - -C /tmp \
+  | tar -xzf - -C /tmp \
   && cd /tmp/createrepo-${CR_VERSION} \
 
 RUN cd /tmp/createrepo-${CR_VERSION} \
