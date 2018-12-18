@@ -8,6 +8,8 @@ ARG YUM_VERSION=3.4.3
 ARG YUM_MIRROR=http://yum.baseurl.org/download/3.4
 ARG CR_VERSION=0-10-4
 ARG CR_MIRROR=https://github.com/rpm-software-management/createrepo/archive
+ARG MP_VERSION=master
+ARG MP_MIRROR=https://github.com/rpm-software-management/yum-metadata-parser/archive
 
 RUN ln -sf /usr/local/bin/python /usr/bin/python
 
@@ -45,6 +47,15 @@ RUN set -o pipefail; \
   && make DESTDIR=/ install
 
 RUN pip install pycurl
+
+RUN set -o pipefail; \
+  apk add glib-dev libxml2-dev sqlite-dev \
+  && wget -O - ${MP_MIRROR}/${MP_VERSION}.tar.gz \
+    | tar -xzf - -C /tmp \
+  && cd /tmp/yum-metadata-parser-${MP_VERSION} \
+  && python setup.py build \
+  && python setup.py install --prefix=/usr \
+  && rm -rf /tmp/yum-metadata-parser-${MP_VERSION}
 
 RUN find /usr/share/man -mindepth 1 -delete \
   && rm -rf /etc/bash_completion.d
