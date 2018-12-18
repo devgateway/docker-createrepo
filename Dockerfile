@@ -2,6 +2,8 @@
 FROM python:2.7-alpine
 
 ARG RPM_VERSION=4.14.0
+ARG UG_VERSION=3-10-2
+ARG UG_MIRROR=https://github.com/rpm-software-management/urlgrabber/archive
 ARG CR_VERSION=0-10-4
 ARG CR_MIRROR=https://github.com/rpm-software-management/createrepo/archive
 
@@ -25,9 +27,16 @@ RUN set -o pipefail; \
   && cd /tmp/createrepo-createrepo-${CR_VERSION} \
   && sed -i '/\<install\>/ s/ --verbose//' Makefile bin/Makefile docs/Makefile \
   && make DESTDIR=/ install \
-  && find /usr/share/man -mindepth 1 -delete \
-  && rm -rf /etc/bash_completion.d
+  && rm -rf /tmp/createrepo-createrepo-${CR_VERSION}
 
-RUN find /usr/share/man -mindepth 1 -delete
+RUN set -o pipefail; \
+  wget -O - ${UG_MIRROR}/urlgrabber-${UG_VERSION}.tar.gz \
+    | tar -xzf - -C /tmp \
+  && cd /tmp/urlgrabber-${UG_VERSION} \
+  && python setup.py install \
+  && rm -rf /tmp/urlgrabber-${UG_VERSION}
+
+RUN find /usr/share/man -mindepth 1 -delete \
+  && rm -rf /etc/bash_completion.d
 
 RUN apk del .build-deps
