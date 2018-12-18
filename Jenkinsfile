@@ -15,12 +15,12 @@ pipeline {
       steps {
         script {
           docker.build(
-            env.IMAGE, ' '.join([
+            env.IMAGE, [
               "--build-arg=OPENLDAP_VERSION=$VERSION",
               '--build-arg=HTTP_PROXY=http://webcache.virtual.devgateway.org',
               '--build-arg=HTTPS_PROXY=http://webcache.virtual.devgateway.org',
               '.'
-            ]))
+            ].join(' '))
         }
       }
     } // stage
