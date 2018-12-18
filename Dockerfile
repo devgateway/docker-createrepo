@@ -14,7 +14,7 @@ RUN ln -sf /usr/local/bin/python /usr/bin/python
 RUN set -o pipefail; \
   apk add --no-cache zlib libmagic popt libarchive db nss \
   && apk add --no-cache --virtual .build-deps git libtool automake autoconf make gcc \
-    libc-dev gettext-dev zlib-dev file-dev popt-dev libarchive-dev db-dev nss-dev \
+    libc-dev gettext-dev zlib-dev file-dev popt-dev libarchive-dev db-dev nss-dev curl curl-dev \
   && wget -O - http://ftp.rpm.org/releases/rpm-4.14.x/rpm-${RPM_VERSION}.tar.bz2 \
     | tar -xjf - -C /tmp \
   && cd /tmp/rpm-${RPM_VERSION} \
@@ -43,6 +43,8 @@ RUN set -o pipefail; \
     | tar -xzf - -C /tmp \
   && cd /tmp/yum-${YUM_VERSION} \
   && make DESTDIR=/ install
+
+RUN pip install pycurl
 
 RUN find /usr/share/man -mindepth 1 -delete \
   && rm -rf /etc/bash_completion.d
