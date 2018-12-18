@@ -34,9 +34,9 @@ RUN set -o pipefail; \
 RUN set -o pipefail; \
   wget -O - ${UG_MIRROR}/urlgrabber-${UG_VERSION}.tar.gz \
     | tar -xzf - -C /tmp \
-  && cd /tmp/urlgrabber-${UG_VERSION} \
+  && cd /tmp/urlgrabber-urlgrabber-${UG_VERSION} \
   && python setup.py install \
-  && rm -rf /tmp/urlgrabber-${UG_VERSION}
+  && rm -rf /tmp/urlgrabber-urlgrabber-${UG_VERSION}
 
 RUN set -o pipefail; \
   wget -O - ${YUM_MIRROR}/yum-${YUM_VERSION}.tar.gz \
