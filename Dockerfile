@@ -39,13 +39,15 @@ RUN set -o pipefail; \
   && ./autogen.sh --prefix=/usr --enable-python --without-lua \
   && make CFLAGS='-lintl -include signal.h' install \
   && find /usr/share/man -mindepth 1 -delete \
-  && rm -rf /tmp/rpm-${RPM_VERSION} \
+  && rm -rf /tmp/rpm-${RPM_VERSION}
 
 RUN set -o pipefail; \
   wget -O - ${CR_MIRROR}/createrepo-${CR_VERSION}.tar.gz \
   | tar -xzf - -C /tmp \
-  && cd /tmp/createrepo-${CR_VERSION} \
+  && cd /tmp/createrepo-createrepo-${CR_VERSION}
 
-RUN cd /tmp/createrepo-${CR_VERSION} \
-  && sed -i '/\<install\>/ s/ --verbose//' Makefile \
-  && make DESTDIR=/ sysconfdir=/etc install
+RUN cd /tmp/createrepo-createrepo-${CR_VERSION} \
+  && sed -i '/\<install\>/ s/ --verbose//' Makefile bin/Makefile docs/Makefile \
+  && make DESTDIR=/ install \
+  && find /usr/share/man -mindepth 1 -delete \
+  && rm -rf /etc/bash_completion.d
