@@ -1,6 +1,8 @@
 # Copyright 2018, Development Gateway, see COPYING
 FROM python:2.7-alpine
 
+RUN env
+
 RUN ln -sf /usr/local/bin/python /usr/bin/python
 
 ARG RPM_VERSION=4.14.0
@@ -16,7 +18,7 @@ RUN set -o pipefail; \
   && sed -i '800 s/-${PYTHON_VERSION}/2/' configure.ac \
   && ./autogen.sh --prefix=/usr --enable-python --without-lua \
   && make CFLAGS='-lintl -include signal.h' install \
-  && rm -rf /tmp/rpm-${RPM_VERSION}
+  && rm -rf /tmp/rpm-${RPM_VERSION} \
   && apk del .build-deps
 
 ARG CR_VERSION=0-10-4
