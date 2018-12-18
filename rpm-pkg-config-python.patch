@@ -1,0 +1,11 @@
+--- rpm/configure.ac
++++ rpm.new/configure.ac
+@@ -801,7 +801,7 @@
+ WITH_PYTHON_SUBPACKAGE=0
+ AS_IF([test "$enable_python" = yes],[
+   AM_PATH_PYTHON([2.6],[
+-    PKG_CHECK_MODULES([PYTHON], [python-${PYTHON_VERSION}], [WITH_PYTHON_SUBPACKAGE=1])
++    PKG_CHECK_MODULES([PYTHON], [python2], [WITH_PYTHON_SUBPACKAGE=1])
+     AC_SUBST(PYTHON_CFLAGS)
+     AC_SUBST(PYTHON_LIB)
+   ])
