@@ -60,7 +60,7 @@ RUN set -o pipefail; \
   && rm -rf /tmp/yum-metadata-parser-${MP_VERSION}
 
 RUN set -o pipefail; \
-  && wget -O - ${DR_MIRROR}/${DR_VERSION}.tar.gz \
+  wget -O - ${DR_MIRROR}/${DR_VERSION}.tar.gz \
     | tar -xzf - -C /tmp \
   && cd /tmp/deltarpm-${DR_VERSION} \
   && apk add xz-dev \
