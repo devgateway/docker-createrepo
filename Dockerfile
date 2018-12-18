@@ -10,6 +10,8 @@ ARG CR_VERSION=0-10-4
 ARG CR_MIRROR=https://github.com/rpm-software-management/createrepo/archive
 ARG MP_VERSION=master
 ARG MP_MIRROR=https://github.com/rpm-software-management/yum-metadata-parser/archive
+ARG DR_VERSION=3.6.1
+ARG DR_MIRROR=https://github.com/rpm-software-management/deltarpm/archive
 
 RUN ln -sf /usr/local/bin/python /usr/bin/python
 
@@ -56,6 +58,15 @@ RUN set -o pipefail; \
   && python setup.py build \
   && python setup.py install --prefix=/usr \
   && rm -rf /tmp/yum-metadata-parser-${MP_VERSION}
+
+RUN set -o pipefail; \
+  && wget -O - ${DR_MIRROR}/${DR_VERSION}.tar.gz \
+    | tar -xzf - -C /tmp \
+  && cd /tmp/deltarpm-${DR_VERSION} \
+  && apk add xz-dev \
+  && make python \
+  && make prefix=/usr install \
+  && rm -rf /tmp/deltarpm-${DR_VERSION}
 
 RUN find /usr/share/man -mindepth 1 -delete \
   && rm -rf /etc/bash_completion.d
