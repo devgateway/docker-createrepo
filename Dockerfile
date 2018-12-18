@@ -4,6 +4,8 @@ FROM python:2.7-alpine
 ARG RPM_VERSION=4.14.0
 ARG UG_VERSION=3-10-2
 ARG UG_MIRROR=https://github.com/rpm-software-management/urlgrabber/archive
+ARG YUM_VERSION=3.4.3
+ARG YUM_MIRROR=http://yum.baseurl.org/download/3.4
 ARG CR_VERSION=0-10-4
 ARG CR_MIRROR=https://github.com/rpm-software-management/createrepo/archive
 
@@ -35,6 +37,12 @@ RUN set -o pipefail; \
   && cd /tmp/urlgrabber-${UG_VERSION} \
   && python setup.py install \
   && rm -rf /tmp/urlgrabber-${UG_VERSION}
+
+RUN set -o pipefail; \
+  wget -O - ${YUM_MIRROR}/yum-${YUM_VERSION}.tar.gz \
+    | tar -xzf - -C /tmp \
+  && cd /tmp/yum-${YUM_VERSION} \
+  && make DESTDIR=/ install
 
 RUN find /usr/share/man -mindepth 1 -delete \
   && rm -rf /etc/bash_completion.d
