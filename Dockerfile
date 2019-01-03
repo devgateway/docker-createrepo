@@ -1,8 +1,6 @@
 # Copyright 2018, Development Gateway, see COPYING
 FROM python:2.7-alpine
 
-RUN env
-
 RUN ln -sf /usr/local/bin/python /usr/bin/python
 
 ARG RPM_VERSION=4.14.0
